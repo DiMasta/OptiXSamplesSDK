@@ -10,8 +10,10 @@ int main (int argc, char* argv[]) {
 
 	//createContext(&context, &outputBuffer);
 
-	sutil::initGlut(&argc, argv);
-	sutil::displayBufferGlut(argv[0], outputBuffer);
+	//sutil::initGlut(&argc, argv);
+	//sutil::displayBufferGlut(argv[0], outputBuffer);
+
+	cout << "Hello, world!" << endl;
 
 	return 0;
 }
