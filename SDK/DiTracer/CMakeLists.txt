@@ -31,6 +31,7 @@ OPTIX_add_sample_executable( diTracer
   diTracer.cpp
 
   helpers.h
+  constants.h
   diTracer.cu
   pinholeCamera.cu
   miss.cu
