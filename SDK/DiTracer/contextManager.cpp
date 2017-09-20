@@ -1,5 +1,7 @@
 #include "contextManager.h"
 
+using namespace optix;
+
 ContextManager::ContextManager() {
 	context = new RTcontext();
 	outputBufferObj = new RTbuffer();
@@ -69,12 +71,12 @@ void ContextManager::createContext() {
 	RT_CHECK_ERROR(rtContextDeclareVariable(*context, "V", &V));
 	RT_CHECK_ERROR(rtContextDeclareVariable(*context, "W", &W));
 
-	optix::float3 camEye = { .0f, .0f, 5.f };
-	optix::float3 lookat = { .0f, .0f, .0f };
-	optix::float3 up = { .0f, 1.f, .0f };
+	float3 camEye = { .0f, .0f, 5.f };
+	float3 lookat = { .0f, .0f, .0f };
+	float3 up = { .0f, 1.f, .0f };
 	float hfov = 60.f;
 	float aspectRatio = (float)BUFFER_WIDTH / (float)BUFFER_HEIGHT;
-	optix::float3 cameraU, cameraV, cameraW;
+	float3 cameraU, cameraV, cameraW;
 
 	sutil::calculateCameraVariables(
 		camEye, lookat, up, hfov, aspectRatio,

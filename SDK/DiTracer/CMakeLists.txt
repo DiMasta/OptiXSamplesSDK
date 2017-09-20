@@ -28,13 +28,18 @@
 
 # See top level CMakeLists.txt file for documentation of OPTIX_add_sample_executable.
 OPTIX_add_sample_executable( diTracer
-  diTracer.cpp
-
   helpers.h
   constants.h
   contextManager.h
+  sceneElment.h
+  camera.h
+  scene.h
 
   contextManager.cpp
+  diTracer.cpp
+  sceneElement.cpp
+  camera.cpp
+  scene.cpp
 
   diTracer.cu
   pinholeCamera.cu
