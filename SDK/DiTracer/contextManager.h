@@ -9,14 +9,15 @@
 class ContextManager {
 public:
 	ContextManager();
+	~ContextManager();
 
-	RTcontext* getContextPointer();
-	RTbuffer* getOutputBufferObjPtr();
+	RTcontext* getContext();
+	RTbuffer* getOutputBufferObj();
 	void createContext();
 private:
-	RTbuffer outputBufferObj;
+	RTbuffer* outputBufferObj;
 
-	RTcontext context;
+	RTcontext* context;
 };
 
 #endif //__CONTEXT_MANAGER_H__

@@ -23,10 +23,9 @@ void createEmptyGroup(RTcontext* context) {
 //**************************************************************************************************************************
 
 int main (int argc, char* argv[]) {
-
 	ContextManager contextManager;
 	contextManager.createContext();
-	RTcontext* context = contextManager.getContextPointer();
+	RTcontext* context = contextManager.getContext();
 
 	try {
 		createEmptyGroup(context);
@@ -36,7 +35,7 @@ int main (int argc, char* argv[]) {
 		RT_CHECK_ERROR(rtContextValidate(*context));
 		RT_CHECK_ERROR(rtContextLaunch2D(*context, 0, BUFFER_WIDTH, BUFFER_HEIGHT));
 
-		sutil::displayBufferGlut(argv[0], *contextManager.getOutputBufferObjPtr());
+		sutil::displayBufferGlut(argv[0], *contextManager.getOutputBufferObj());
 
 		RT_CHECK_ERROR(rtContextDestroy(*context));
 
