@@ -34,12 +34,16 @@ OPTIX_add_sample_executable( diTracer
   sceneElment.h
   camera.h
   scene.h
+  geometry.h
+  cube.h
 
   contextManager.cpp
   diTracer.cpp
   sceneElement.cpp
   camera.cpp
   scene.cpp
+  geometry.cpp
+  cube.cpp
 
   diTracer.cu
   pinholeCamera.cu
