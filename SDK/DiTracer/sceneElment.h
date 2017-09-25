@@ -10,7 +10,7 @@ public:
 	SceneElement();
 	~SceneElement();
 
-	virtual void prepareGPUProgram(RTcontext* context) = 0;
+	virtual void prepareGPUPrograms(RTcontext* context) = 0;
 	virtual void prepareGPUVariables(RTcontext* context) = 0;
 private:
 };

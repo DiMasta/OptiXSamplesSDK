@@ -20,7 +20,7 @@ public:
 	void setFov(float fov);
 	void setAspectRatio(float aspectRatio);
 
-	void prepareGPUProgram(RTcontext* context) override;
+	void prepareGPUPrograms(RTcontext* context) override;
 	void prepareGPUVariables(RTcontext* context) override;
 
 	void computeAspectRatio();

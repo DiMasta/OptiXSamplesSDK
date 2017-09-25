@@ -89,7 +89,7 @@ void Camera::setAspectRatio(float aspectRatio) {
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void Camera::prepareGPUProgram(RTcontext* context) {
+void Camera::prepareGPUPrograms(RTcontext* context) {
 	RTprogram rayGenerationProgram;
 
 	RT_CHECK_ERROR(rtProgramCreateFromPTXFile(*context, PINHOLE_CAMERA_PTX, "pinholeCamera", &rayGenerationProgram));

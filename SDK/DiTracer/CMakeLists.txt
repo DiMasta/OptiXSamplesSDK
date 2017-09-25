@@ -48,4 +48,5 @@ OPTIX_add_sample_executable( diTracer
   diTracer.cu
   pinholeCamera.cu
   miss.cu
+  cube.cu
   )

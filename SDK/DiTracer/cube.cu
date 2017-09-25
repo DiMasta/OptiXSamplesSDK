@@ -1,18 +1,23 @@
 #include <optix_world.h>
 
-struct RayState {
-	float3 result;
-};
+using namespace optix;
+
+rtDeclareVariable(float3, cubeBottom, , );
+rtDeclareVariable(float3, cubeTop, , );
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-rtDeclareVariable(float3, bgColor, , );
-rtDeclareVariable(RayState, rayState, rtPayload, );
+RT_PROGRAM void boundingBoxProgram(int primIdx, float result[6]) {
+	Aabb* aabb = (Aabb*)result;
+
+	aabb->m_min = cubeBottom;
+	aabb->m_max = cubeTop;
+}
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-RT_PROGRAM void miss() {
-	rayState.result = bgColor;
+RT_PROGRAM void intersectionProgram(int primIdx) {
+
 }
