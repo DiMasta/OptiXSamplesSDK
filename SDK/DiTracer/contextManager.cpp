@@ -94,6 +94,11 @@ void ContextManager::createContext() {
 	RT_CHECK_ERROR(rtVariableSetObject(outputBuffer, *outputBufferObj));
 
 	scene->setupCameraForRendering(context);
+	scene->setupCubeForRendering(context);
+	scene->setupConstantMaterialForRendering(context);
+
+	// TODO: separate classes for grom groups and instances
+	scene->createInstance(context);
 
 	// TODO: separate class : Scene element for environment
 	RT_CHECK_ERROR(rtProgramCreateFromPTXFile(*context, MISS_PTX, "miss", &missProgram));

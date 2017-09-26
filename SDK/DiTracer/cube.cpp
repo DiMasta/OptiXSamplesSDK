@@ -48,7 +48,7 @@ void Cube::setTop(optix::float3 top) {
 //**************************************************************************************************************************
 
 void Cube::createGeometry(RTcontext* context) {
-	RTgeometry* geometry = getGeometry();
+	RTgeometry* geometry = getRTGeometry();
 
 	RT_CHECK_ERROR(rtGeometryCreate(*context, geometry));
 	RT_CHECK_ERROR(rtGeometrySetPrimitiveCount(*geometry, 1u));
@@ -59,7 +59,7 @@ void Cube::createGeometry(RTcontext* context) {
 
 void Cube::prepareIntersectionProgram(RTcontext* context) {
 	RTprogram intersectionProgram;
-	RTgeometry* geometry = getGeometry();
+	RTgeometry* geometry = getRTGeometry();
 
 	RT_CHECK_ERROR(rtProgramCreateFromPTXFile(*context, CUBE_PTX, "intersectionProgram", &intersectionProgram));
 	RT_CHECK_ERROR(rtGeometrySetIntersectionProgram(*geometry, intersectionProgram));
@@ -70,7 +70,7 @@ void Cube::prepareIntersectionProgram(RTcontext* context) {
 
 void Cube::prepareBoundingBoxProgram(RTcontext* context) {
 	RTprogram boundingBoxProgram;
-	RTgeometry* geometry = getGeometry();
+	RTgeometry* geometry = getRTGeometry();
 
 	RT_CHECK_ERROR(rtProgramCreateFromPTXFile(*context, CUBE_PTX, "boundingBoxProgram", &boundingBoxProgram));
 	RT_CHECK_ERROR(rtGeometrySetBoundingBoxProgram(*geometry, boundingBoxProgram));
@@ -91,7 +91,7 @@ void Cube::prepareGPUPrograms(RTcontext* context) {
 void Cube::prepareGPUVariables(RTcontext* context) {
 	RTvariable cubeBottom;
 	RTvariable cubeTop;
-	RTgeometry* geometry = getGeometry();
+	RTgeometry* geometry = getRTGeometry();
 
 	RT_CHECK_ERROR(rtGeometryDeclareVariable(*geometry, "cubeBottom", &cubeBottom));
 	RT_CHECK_ERROR(rtGeometryDeclareVariable(*geometry, "cubeTop", &cubeTop));

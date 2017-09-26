@@ -1,10 +1,10 @@
-#include "raystate.cu"
+#include <optix_world.h>
 
-rtDeclareVariable(float3, bgColor, , );
+struct RayState {
+	float3 result;
+};
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-RT_PROGRAM void miss() {
-	rayState.result = bgColor;
-}
+rtDeclareVariable(RayState, rayState, rtPayload, );

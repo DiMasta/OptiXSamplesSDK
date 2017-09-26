@@ -8,9 +8,9 @@ public:
 	Geometry();
 	~Geometry();
 
-	RTgeometry* getGeometry() const;
+	RTgeometry* getRTGeometry() const;
 
-	void setGeoemtry(RTgeometry* geometry);
+	void setRTGeoemtry(RTgeometry* geometry);
 
 	virtual void createGeometry(RTcontext* context) = 0;
 	virtual void prepareIntersectionProgram(RTcontext* context) = 0;

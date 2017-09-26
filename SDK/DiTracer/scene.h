@@ -3,6 +3,7 @@
 
 #include "camera.h"
 #include "cube.h"
+#include "constantMaterial.h"
 
 class Scene {
 public:
@@ -11,16 +12,22 @@ public:
 
 	Camera* getCamera() const;
 	Cube* getCube() const;
+	ConstantMaterial* getConstantMaterial() const;
 
 	void setCamera(Camera* camera);
 	void setCube(Cube* cube);
+	void setConstantMaterial(ConstantMaterial* constantMaterial);
 
 	void setupCameraForRendering(RTcontext* context);
 	void setupCubeForRendering(RTcontext* context);
+	void setupConstantMaterialForRendering(RTcontext* context);
+
+	void createInstance(RTcontext* context);
 
 private:
 	Camera* camera;
 	Cube* cube;
+	ConstantMaterial* constantMaterial;
 };
 
 #endif //__SCENE_H__
