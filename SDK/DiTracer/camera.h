@@ -20,8 +20,8 @@ public:
 	void setFov(float fov);
 	void setAspectRatio(float aspectRatio);
 
-	void prepareGPUPrograms(RTcontext* context) override;
-	void prepareGPUVariables(RTcontext* context) override;
+	void prepareGPUPrograms(RTcontext* context) override; // From SceneElement
+	void prepareGPUVariables(RTcontext* context) override; // From SceneElement
 
 	void computeAspectRatio();
 

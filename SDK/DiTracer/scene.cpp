@@ -4,6 +4,7 @@ Scene::Scene() {
 	camera = new Camera();
 	cube = new Cube();
 	constantMaterial = new ConstantMaterial();
+	environment = new Environment();
 }
 
 //**************************************************************************************************************************
@@ -23,6 +24,11 @@ Scene::~Scene() {
 	if (constantMaterial) {
 		delete constantMaterial;
 		constantMaterial = NULL;
+	}
+
+	if (environment) {
+		delete environment;
+		environment = NULL;
 	}
 }
 
@@ -50,6 +56,13 @@ ConstantMaterial* Scene::getConstantMaterial() const {
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
+Environment* Scene::getEnvironment() const {
+	return environment;
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
 void Scene::setCamera(Camera* camera) {
 	this->camera = camera;
 }
@@ -66,6 +79,13 @@ void Scene::setCube(Cube* cube) {
 
 void Scene::setConstantMaterial(ConstantMaterial* constantMaterial) {
 	this->constantMaterial = constantMaterial;
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void Scene::setEnvironment(Environment* environment) {
+	this->environment = environment;
 }
 
 //**************************************************************************************************************************
@@ -104,6 +124,16 @@ void Scene::setupConstantMaterialForRendering(RTcontext* context) {
 	constantMaterial->createMaterial(context);
 	constantMaterial->prepareGPUVariables(context);
 	constantMaterial->prepareGPUPrograms(context);
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void Scene::setupEnvironmentForRendering(RTcontext* context) {
+	environment->setBackgroundColor(ENVIRONMENT_COLOR);
+
+	environment->prepareGPUPrograms(context);
+	environment->prepareGPUVariables(context);
 }
 
 //**************************************************************************************************************************

@@ -74,10 +74,7 @@ void ContextManager::setContext(RTcontext* context) {
 //**************************************************************************************************************************
 
 void ContextManager::createContext() {
-	RTprogram missProgram;
-
 	RTvariable outputBuffer;
-	RTvariable bgColor;
 
 	RT_CHECK_ERROR(rtContextCreate(context));
 	RT_CHECK_ERROR(rtContextSetPrintEnabled(*context, true));
@@ -96,13 +93,8 @@ void ContextManager::createContext() {
 	scene->setupCameraForRendering(context);
 	scene->setupCubeForRendering(context);
 	scene->setupConstantMaterialForRendering(context);
+	scene->setupEnvironmentForRendering(context);
 
 	// TODO: separate classes for grom groups and instances
 	scene->createInstance(context);
-
-	// TODO: separate class : Scene element for environment
-	RT_CHECK_ERROR(rtProgramCreateFromPTXFile(*context, MISS_PTX, "miss", &missProgram));
-	RT_CHECK_ERROR(rtProgramDeclareVariable(missProgram, "bgColor", &bgColor));
-	RT_CHECK_ERROR(rtVariableSet3f(bgColor, 1.f, .0f, .0f));
-	RT_CHECK_ERROR(rtContextSetMissProgram(*context, 0, missProgram));
 }
