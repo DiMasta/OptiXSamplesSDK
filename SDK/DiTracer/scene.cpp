@@ -111,8 +111,8 @@ void Scene::setupConstantMaterialForRendering(RTcontext* context) {
 
 void Scene::createInstance(RTcontext* context) {
 	RTgeometrygroup geometrygroup;
-	RTvariable      topObject;
-	RTacceleration  acceleration;
+	RTvariable topObject;
+	RTacceleration acceleration;
 	RTgeometryinstance instance;
 
 	RTgeometry* rtGeoemetry = cube->getRTGeometry();

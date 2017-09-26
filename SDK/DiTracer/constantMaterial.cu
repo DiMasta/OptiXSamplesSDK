@@ -1,10 +1,10 @@
 #include "raystate.cu"
 
-rtDeclareVariable(float3, constnatColor, , );
+rtDeclareVariable(float3, constantColor, , );
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
 RT_PROGRAM void constantMaterialClosestHit() {
-	rayState.result = constnatColor;
+	rayState.result = constantColor;
 }
