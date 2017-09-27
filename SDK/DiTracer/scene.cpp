@@ -154,9 +154,11 @@ void Scene::createInstance(RTcontext* context) {
 	RT_CHECK_ERROR(rtGeometryInstanceSetMaterialCount(instance, 1));
 	RT_CHECK_ERROR(rtGeometryInstanceSetMaterial(instance, 0, *rtMaterial));
 
-	/* Create geometry group */
+	/* Create acceleration */
 	RT_CHECK_ERROR(rtAccelerationCreate(*context, &acceleration));
 	RT_CHECK_ERROR(rtAccelerationSetBuilder(acceleration, "NoAccel"));
+
+	/* Create geometry group */
 	RT_CHECK_ERROR(rtGeometryGroupCreate(*context, &geometrygroup));
 	RT_CHECK_ERROR(rtGeometryGroupSetChildCount(geometrygroup, 1));
 	RT_CHECK_ERROR(rtGeometryGroupSetChild(geometrygroup, 0, instance));
