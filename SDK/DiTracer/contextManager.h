@@ -7,9 +7,15 @@
 #include "scene.h"
 #include "outputBuffer.h"
 
+struct GLUTInitArgs {
+	int argc;
+	char** argv;
+};
+
 class ContextManager {
 public:
 	ContextManager();
+	ContextManager(int argc, char** argv);
 	~ContextManager();
 
 	Scene* getScene() const;
@@ -20,8 +26,16 @@ public:
 	void setOutputBuffer(OutputBuffer* outputBuffer);
 	void setContext(RTcontext* context);
 
+	void initRendering();
 	void createContext();
+	void renderBegin();
+	void renderEnd();
+	void render();
+
 private:
+	// Cached main function arguments used to init GLUT
+	GLUTInitArgs glutInitArgs;
+
 	Scene* scene;
 	OutputBuffer* outputBuffer;
 

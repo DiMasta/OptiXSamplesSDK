@@ -1,11 +1,22 @@
 #include "contextManager.h"
 
 using namespace optix;
+using namespace sutil;
 
-ContextManager::ContextManager() {
-	context = new RTcontext();
-	outputBuffer = new OutputBuffer();
-	scene = new Scene();
+ContextManager::ContextManager() :
+	glutInitArgs()
+{
+	initRendering();
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+ContextManager::ContextManager(int argc, char** argv) {
+	glutInitArgs.argc = argc;
+	glutInitArgs.argv = argv;
+
+	initRendering();
 }
 
 //**************************************************************************************************************************
@@ -70,12 +81,28 @@ void ContextManager::setContext(RTcontext* context) {
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
+void ContextManager::initRendering() {
+	context = new RTcontext();
+	outputBuffer = new OutputBuffer();
+	scene = new Scene();
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
 void ContextManager::createContext() {
 	RT_CHECK_ERROR(rtContextCreate(context));
 	RT_CHECK_ERROR(rtContextSetPrintEnabled(*context, true));
 	RT_CHECK_ERROR(rtContextSetPrintBufferSize(*context, PRINT_BUFFER_SIZE));
 	RT_CHECK_ERROR(rtContextSetRayTypeCount(*context, 1));
 	RT_CHECK_ERROR(rtContextSetEntryPointCount(*context, 1));
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void ContextManager::renderBegin() {
+	createContext();
 
 	outputBuffer->createBuffer(context);
 
@@ -86,4 +113,27 @@ void ContextManager::createContext() {
 
 	// TODO: separate classes for grom groups and instances
 	scene->createInstance(context);
+
+	initGlut(&glutInitArgs.argc, glutInitArgs.argv);
+
+	RT_CHECK_ERROR(rtContextValidate(*context));
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void ContextManager::renderEnd() {
+	RT_CHECK_ERROR(rtContextDestroy(*context));
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void ContextManager::render() {
+	renderBegin();
+
+	RT_CHECK_ERROR(rtContextLaunch2D(*context, 0, BUFFER_WIDTH, BUFFER_HEIGHT));
+	displayBufferGlut(glutInitArgs.argv[0], *getOutputBuffer()->getBuffer());
+
+	renderEnd();
 }
