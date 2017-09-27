@@ -1,3 +1,6 @@
+#ifndef __MISS_CU__
+#define __MISS_CU__
+
 #include "raystate.cu"
 
 rtDeclareVariable(float3, bgColor, , );
@@ -8,3 +11,5 @@ rtDeclareVariable(float3, bgColor, , );
 RT_PROGRAM void miss() {
 	rayState.result = bgColor;
 }
+
+#endif // __MISS_CU__

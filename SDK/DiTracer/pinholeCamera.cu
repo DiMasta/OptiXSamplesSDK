@@ -1,3 +1,6 @@
+#ifndef __PINHOLE_CAMERA_CU__
+#define __PINHOLE_CAMERA_CU__
+
 #include <optix_world.h>
 #include "helpers.h"
 
@@ -35,3 +38,5 @@ RT_PROGRAM void pinholeCamera() {
 
 	outputBuffer[launchIndex] = make_color(rayState.result);
 }
+
+#endif // __PINHOLE_CAMERA_CU__

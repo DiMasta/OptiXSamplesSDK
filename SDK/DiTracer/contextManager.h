@@ -5,6 +5,7 @@
 
 #include "constants.h"
 #include "scene.h"
+#include "outputBuffer.h"
 
 class ContextManager {
 public:
@@ -12,17 +13,17 @@ public:
 	~ContextManager();
 
 	Scene* getScene() const;
-	RTbuffer* getOutputBufferObj() const;
+	OutputBuffer* getOutputBuffer() const;
 	RTcontext* getContext() const;
 
 	void setScene(Scene* scene);
-	void setOutputBufferObj(RTbuffer* outputBufferObj);
+	void setOutputBuffer(OutputBuffer* outputBuffer);
 	void setContext(RTcontext* context);
 
 	void createContext();
 private:
 	Scene* scene;
-	RTbuffer* outputBufferObj;
+	OutputBuffer* outputBuffer;
 
 	RTcontext* context;
 };

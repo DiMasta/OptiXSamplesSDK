@@ -11,7 +11,7 @@ int main (int argc, char* argv[]) {
 		RT_CHECK_ERROR(rtContextValidate(*context));
 		RT_CHECK_ERROR(rtContextLaunch2D(*context, 0, BUFFER_WIDTH, BUFFER_HEIGHT));
 
-		sutil::displayBufferGlut(argv[0], *contextManager.getOutputBufferObj());
+		sutil::displayBufferGlut(argv[0], *contextManager.getOutputBuffer()->getBuffer());
 
 		RT_CHECK_ERROR(rtContextDestroy(*context));
 

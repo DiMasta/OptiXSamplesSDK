@@ -1,3 +1,6 @@
+#ifndef __CUBE_CU__
+#define __CUBE_CU__
+
 #include <optix.h>
 #include <optixu/optixu_math_namespace.h>
 #include <optixu/optixu_matrix_namespace.h>
@@ -51,3 +54,5 @@ RT_PROGRAM void intersectionProgram(int primIdx) {
 		}
 	}
 }
+
+#endif // __CUBE_CU__

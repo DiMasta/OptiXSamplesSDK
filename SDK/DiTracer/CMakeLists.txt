@@ -39,6 +39,8 @@ OPTIX_add_sample_executable( diTracer
   material.h
   constantMaterial.h
   environment.h
+  buffer.h
+  outputBuffer.h
 
   contextManager.cpp
   diTracer.cpp
@@ -50,6 +52,8 @@ OPTIX_add_sample_executable( diTracer
   material.cpp
   constantMaterial.cpp
   environment.cpp
+  buffer.cpp
+  outputBuffer.cpp
 
   diTracer.cu
   pinholeCamera.cu

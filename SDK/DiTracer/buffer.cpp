@@ -1,89 +1,66 @@
-#include "contextManager.h"
+#include "buffer.h"
 
-using namespace optix;
-
-ContextManager::ContextManager() {
-	context = new RTcontext();
-	outputBuffer = new OutputBuffer();
-	scene = new Scene();
+Buffer::Buffer() :
+	name()
+{
+	buffer = new RTbuffer();
+	variable = new RTvariable();
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-ContextManager::~ContextManager() {
-	if (context) {
-		delete context;
-		context = NULL;
+Buffer::~Buffer() {
+	if (buffer) {
+		delete buffer;
+		buffer = NULL;
 	}
 
-	if (outputBuffer) {
-		delete outputBuffer;
-		outputBuffer = NULL;
-	}
-
-	if (scene) {
-		delete scene;
-		scene = NULL;
+	if (variable) {
+		delete variable;
+		variable = NULL;
 	}
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-Scene* ContextManager::getScene() const {
-	return scene;
+RTbuffer* Buffer::getBuffer() const {
+	return buffer;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-OutputBuffer* ContextManager::getOutputBuffer() const {
-	return outputBuffer;
-}
-
-RTcontext* ContextManager::getContext() const {
-	return context;
+RTvariable* Buffer::getVariable() const {
+	return variable;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::setScene(Scene* scene) {
-	this->scene = scene;
+std::string Buffer::getName() const {
+	return name;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::setOutputBuffer(OutputBuffer* outputBuffer) {
-	this->outputBuffer = outputBuffer;
+
+void Buffer::setBuffer(RTbuffer* buffer) {
+	this->buffer = buffer;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::setContext(RTcontext* context) {
-	this->context = context;
+void Buffer::setVariable(RTvariable* variable) {
+	this->variable = variable;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::createContext() {
-	RT_CHECK_ERROR(rtContextCreate(context));
-	RT_CHECK_ERROR(rtContextSetPrintEnabled(*context, true));
-	RT_CHECK_ERROR(rtContextSetPrintBufferSize(*context, PRINT_BUFFER_SIZE));
-	RT_CHECK_ERROR(rtContextSetRayTypeCount(*context, 1));
-	RT_CHECK_ERROR(rtContextSetEntryPointCount(*context, 1));
-
-	outputBuffer->createBuffer(context);
-
-	scene->setupCameraForRendering(context);
-	scene->setupCubeForRendering(context);
-	scene->setupConstantMaterialForRendering(context);
-	scene->setupEnvironmentForRendering(context);
-
-	// TODO: separate classes for grom groups and instances
-	scene->createInstance(context);
+void Buffer::setName(std::string name) {
+	this->name = name;
 }

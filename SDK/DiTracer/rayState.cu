@@ -1,3 +1,6 @@
+#ifndef __RAYSTATE_CU__
+#define __RAYSTATE_CU__
+
 #include <optix_world.h>
 
 struct RayState {
@@ -8,3 +11,5 @@ struct RayState {
 //**************************************************************************************************************************
 
 rtDeclareVariable(RayState, rayState, rtPayload, );
+
+#endif // __RAYSTATE_CU__
