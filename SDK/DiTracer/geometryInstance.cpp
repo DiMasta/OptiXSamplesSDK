@@ -1,7 +1,8 @@
 #include "geometryInstance.h"
 
 DiGeometryInstnace::DiGeometryInstnace() :
-	materials()
+	materials(),
+	geometry(NULL)
 {
 	rtGeometryInstance = new RTgeometryinstance();
 }
