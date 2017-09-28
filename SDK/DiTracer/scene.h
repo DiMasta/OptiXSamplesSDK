@@ -1,6 +1,7 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
+#include "geometryGroup.h"
 #include "camera.h"
 #include "cube.h"
 #include "constantMaterial.h"
@@ -11,6 +12,7 @@ public:
 	Scene();
 	~Scene();
 
+	DiGeometryGroup* getGeometryGroup() const;
 	Camera* getCamera() const;
 	Cube* getCube() const;
 	ConstantMaterial* getConstantMaterial() const;
@@ -20,6 +22,7 @@ public:
 	void setCube(Cube* cube);
 	void setConstantMaterial(ConstantMaterial* constantMaterial);
 	void setEnvironment(Environment* environment);
+	void setGeoemetryGroup(DiGeometryGroup* geometryGroup);
 
 	void setupCameraForRendering(RTcontext* context);
 	void setupCubeForRendering(RTcontext* context);
@@ -27,8 +30,14 @@ public:
 	void setupEnvironmentForRendering(RTcontext* context);
 
 	void createInstance(RTcontext* context);
+	void createGeometryGroup(RTcontext* context);
+	void createGeoemetryInstnaces(RTcontext* context);
+	void createTopObject(RTcontext* context);
+	void createOptiXSceneGraph(RTcontext* context);
 
 private:
+	DiGeometryGroup* geometryGroup;
+
 	Camera* camera;
 	Cube* cube;
 	ConstantMaterial* constantMaterial;

@@ -1,6 +1,7 @@
 #include "scene.h"
 
 Scene::Scene() {
+	geometryGroup = new DiGeometryGroup();
 	camera = new Camera();
 	cube = new Cube();
 	constantMaterial = new ConstantMaterial();
@@ -11,6 +12,11 @@ Scene::Scene() {
 //**************************************************************************************************************************
 
 Scene::~Scene() {
+	if (geometryGroup) {
+		delete geometryGroup;
+		geometryGroup = NULL;
+	}
+
 	if (camera) {
 		delete camera;
 		camera = NULL;
@@ -30,6 +36,13 @@ Scene::~Scene() {
 		delete environment;
 		environment = NULL;
 	}
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+DiGeometryGroup * Scene::getGeometryGroup() const {
+	return geometryGroup;
 }
 
 //**************************************************************************************************************************
@@ -91,6 +104,13 @@ void Scene::setEnvironment(Environment* environment) {
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
+void Scene::setGeoemetryGroup(DiGeometryGroup* geometryGroup) {
+	this->geometryGroup = geometryGroup;
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
 void Scene::setupCameraForRendering(RTcontext* context) {
 	camera->setCamEye(DEFAULT_CAEMRA_EYE);
 	camera->setLookAt(DEFAULT_CAMERA_LOOK_AT);
@@ -139,31 +159,49 @@ void Scene::setupEnvironmentForRendering(RTcontext* context) {
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void Scene::createInstance(RTcontext* context) {
-	RTgeometrygroup geometrygroup;
-	RTvariable topObject;
+void Scene::createGeoemetryInstnaces(RTcontext* context) {
+	geometryGroup->addGeometryInstance(cube, constantMaterial);
+	geometryGroup->getGeometryInstanceByIdx(0)->create(context);
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void Scene::createGeometryGroup(RTcontext* context) {
+	RTgeometrygroup* rtGeometryGroup = geometryGroup->getGeometryGroup();
+	RT_CHECK_ERROR(rtGeometryGroupCreate(*context, rtGeometryGroup));
+
+	int geometryInstancesCount = geometryGroup->getGeometryInstancesCount();
+	RT_CHECK_ERROR(rtGeometryGroupSetChildCount(*rtGeometryGroup, geometryInstancesCount));
+
+	for (int geomInstIdx = 0; geomInstIdx < geometryInstancesCount; ++geomInstIdx) {
+		DiGeometryInstnace* diGeometryInstnace = geometryGroup->getGeometryInstanceByIdx(geomInstIdx);
+		RTgeometryinstance* rtGeometryInstnace = diGeometryInstnace->getRTGeometryInstance();
+		RT_CHECK_ERROR(rtGeometryGroupSetChild(*rtGeometryGroup, geomInstIdx, *rtGeometryInstnace));
+	}
+
 	RTacceleration acceleration;
-	RTgeometryinstance instance;
-
-	RTgeometry* rtGeoemetry = cube->getRTGeometry();
-	RTmaterial* rtMaterial = constantMaterial->getRTMaterial();
-
-	/* Create geometry instance */
-	RT_CHECK_ERROR(rtGeometryInstanceCreate(*context, &instance));
-	RT_CHECK_ERROR(rtGeometryInstanceSetGeometry(instance, *rtGeoemetry));
-	RT_CHECK_ERROR(rtGeometryInstanceSetMaterialCount(instance, 1));
-	RT_CHECK_ERROR(rtGeometryInstanceSetMaterial(instance, 0, *rtMaterial));
-
-	/* Create acceleration */
 	RT_CHECK_ERROR(rtAccelerationCreate(*context, &acceleration));
 	RT_CHECK_ERROR(rtAccelerationSetBuilder(acceleration, "NoAccel"));
+	RT_CHECK_ERROR(rtGeometryGroupSetAcceleration(*rtGeometryGroup, acceleration));
+}
 
-	/* Create geometry group */
-	RT_CHECK_ERROR(rtGeometryGroupCreate(*context, &geometrygroup));
-	RT_CHECK_ERROR(rtGeometryGroupSetChildCount(geometrygroup, 1));
-	RT_CHECK_ERROR(rtGeometryGroupSetChild(geometrygroup, 0, instance));
-	RT_CHECK_ERROR(rtGeometryGroupSetAcceleration(geometrygroup, acceleration));
+//**************************************************************************************************************************
+//**************************************************************************************************************************
 
+void Scene::createTopObject(RTcontext* context) {
+	RTvariable topObject;
 	RT_CHECK_ERROR(rtContextDeclareVariable(*context, "topObject", &topObject));
-	RT_CHECK_ERROR(rtVariableSetObject(topObject, geometrygroup));
+
+	RTgeometrygroup* rtGeometryGroup = geometryGroup->getGeometryGroup();
+	RT_CHECK_ERROR(rtVariableSetObject(topObject, *rtGeometryGroup));
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void Scene::createOptiXSceneGraph(RTcontext* context) {
+	createGeoemetryInstnaces(context);
+	createGeometryGroup(context);
+	createTopObject(context);
 }

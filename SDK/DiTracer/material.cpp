@@ -1,6 +1,6 @@
 #include "material.h"
 
-Material::Material() :
+DiMaterial::DiMaterial() :
 	SceneElement()
 {
 	material = new RTmaterial();
@@ -9,7 +9,7 @@ Material::Material() :
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-Material::~Material() {
+DiMaterial::~DiMaterial() {
 	if (material) {
 		delete material;
 		material = NULL;
@@ -20,7 +20,7 @@ Material::~Material() {
 //**************************************************************************************************************************
 
 
-RTmaterial* Material::getRTMaterial() const {
+RTmaterial* DiMaterial::getRTMaterial() const {
 	return material;
 }
 
@@ -28,6 +28,6 @@ RTmaterial* Material::getRTMaterial() const {
 //**************************************************************************************************************************
 
 
-void Material::setRTMaterial(RTmaterial* material) {
+void DiMaterial::setRTMaterial(RTmaterial* material) {
 	this->material = material;
 }

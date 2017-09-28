@@ -111,8 +111,7 @@ void ContextManager::renderBegin() {
 	scene->setupConstantMaterialForRendering(context);
 	scene->setupEnvironmentForRendering(context);
 
-	// TODO: separate classes for grom groups and instances
-	scene->createInstance(context);
+	scene->createOptiXSceneGraph(context);
 
 	initGlut(&glutInitArgs.argc, glutInitArgs.argv);
 

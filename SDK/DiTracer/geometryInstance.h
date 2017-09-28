@@ -6,25 +6,26 @@
 #include "geometry.h"
 #include "material.h"
 
-typedef std::vector<Material*> MaterialsList;
+typedef std::vector<DiMaterial*> MaterialsList;
 
-class GeoemetryInstnace {
+class DiGeometryInstnace {
 public:
-	GeoemetryInstnace();
-	~GeoemetryInstnace();
+	DiGeometryInstnace();
+	~DiGeometryInstnace();
 
-	Geometry* getGeoemetry() const;
+	DiGeometry* getGeometry() const;
 	MaterialsList getMaterials() const;
 	RTgeometryinstance* getRTGeometryInstance() const;
 
-	void setGeometry(Geometry* geometry);
+	void setGeometry(DiGeometry* geometry);
 	void setMaterials(MaterialsList materials);
 	void setRTGeoemetryInstance(RTgeometryinstance* rtGeometryInstance);
 
 	void create(RTcontext* context);
+	void addMaterial(DiMaterial* material);
 
 private:
-	Geometry* geometry;
+	DiGeometry* geometry;
 	MaterialsList materials;
 
 	RTgeometryinstance* rtGeometryInstance;

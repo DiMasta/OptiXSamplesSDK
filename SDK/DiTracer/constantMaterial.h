@@ -3,7 +3,7 @@
 
 #include "material.h"
 
-class ConstantMaterial : public Material {
+class ConstantMaterial : public DiMaterial {
 public:
 	ConstantMaterial();
 	~ConstantMaterial();

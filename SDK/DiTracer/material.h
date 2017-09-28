@@ -3,10 +3,10 @@
 
 #include "sceneElment.h"
 
-class Material : public SceneElement {
+class DiMaterial : public SceneElement {
 public:
-	Material();
-	~Material();
+	DiMaterial();
+	~DiMaterial();
 
 	RTmaterial* getRTMaterial() const;
 

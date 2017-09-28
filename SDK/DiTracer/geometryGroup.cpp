@@ -1,65 +1,80 @@
-#include "constantMaterial.h"
+#include "geometryGroup.h"
 
-ConstantMaterial::ConstantMaterial() :
-	DiMaterial()
+DiGeometryGroup::DiGeometryGroup() :
+	geometryInstancesList()
 {
-
+	geometryGroup = new RTgeometrygroup();
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-ConstantMaterial::~ConstantMaterial() {
+DiGeometryGroup::~DiGeometryGroup() {
+	for (size_t geomInstIdx = 0; geomInstIdx < geometryInstancesList.size(); ++geomInstIdx) {
+		if (geometryInstancesList[geomInstIdx]) {
+			delete geometryInstancesList[geomInstIdx];
+			geometryInstancesList[geomInstIdx] = NULL;
+		}
+	}
+
+	geometryInstancesList.clear();
+
+	if (geometryGroup) {
+		delete geometryGroup;
+		geometryGroup  = NULL;
+	}
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-optix::float3 ConstantMaterial::getColor() const {
-	return color;
+GeometryInstancesList DiGeometryGroup::getGeometryInstancesList() const {
+	return geometryInstancesList;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ConstantMaterial::setColor(optix::float3 color) {
-	this->color = color;
+RTgeometrygroup* DiGeometryGroup::getGeometryGroup() const {
+	return geometryGroup;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ConstantMaterial::createMaterial(RTcontext* context) {
-	RTmaterial* material = getRTMaterial();
-
-	RT_CHECK_ERROR(rtMaterialCreate(*context, material));
+void DiGeometryGroup::setGeometryInstancesList(GeometryInstancesList geometryInstancesList) {
+	this->geometryInstancesList = geometryInstancesList;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ConstantMaterial::prepareClosestHitProgram(RTcontext* context) {
-	RTprogram closestHitProgram;
-	RTmaterial* material = getRTMaterial();
-
-	RT_CHECK_ERROR(rtProgramCreateFromPTXFile(*context, CONSTANT_MATERIAL_PTX, "constantMaterialClosestHit", &closestHitProgram));
-	RT_CHECK_ERROR(rtMaterialSetClosestHitProgram(*material, 0, closestHitProgram));
+void DiGeometryGroup::setGeometryGroup(RTgeometrygroup* geometryGroup) {
+	this->geometryGroup = geometryGroup;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ConstantMaterial::prepareGPUPrograms(RTcontext* context) {
-	prepareClosestHitProgram(context);
+void DiGeometryGroup::addGeometryInstance(DiGeometry* geometry, DiMaterial* material) {
+	DiGeometryInstnace* geometryInstance = new DiGeometryInstnace();
+
+	geometryInstance->setGeometry(geometry);
+	geometryInstance->addMaterial(material);
+
+	geometryInstancesList.push_back(geometryInstance);
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ConstantMaterial::prepareGPUVariables(RTcontext* context) {
-	RTvariable constantColor;
-	RTmaterial* material = getRTMaterial();
+int DiGeometryGroup::getGeometryInstancesCount() const {
+	return (int)geometryInstancesList.size();
+}
 
-	RT_CHECK_ERROR(rtMaterialDeclareVariable(*material, "constantColor", &constantColor));
-	RT_CHECK_ERROR(rtVariableSet3f(constantColor, CONSTANT_MATERIAL_COLOR.x, CONSTANT_MATERIAL_COLOR.y, CONSTANT_MATERIAL_COLOR.z));
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+DiGeometryInstnace* DiGeometryGroup::getGeometryInstanceByIdx(int idx) const {
+	return geometryInstancesList[idx];
 }

@@ -1,62 +1,71 @@
 #include "geometryInstance.h"
 
-GeoemetryInstnace::GeoemetryInstnace() {
-
+DiGeometryInstnace::DiGeometryInstnace() :
+	materials()
+{
+	rtGeometryInstance = new RTgeometryinstance();
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-GeoemetryInstnace::~GeoemetryInstnace() {
+DiGeometryInstnace::~DiGeometryInstnace() {
+	if (rtGeometryInstance) {
+		delete rtGeometryInstance;
+		rtGeometryInstance = NULL;
+	}
 
+	// Geometry and Materials memory is freed in the Scene class
+
+	materials.clear();
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-Geometry* GeoemetryInstnace::getGeoemetry() const {
+DiGeometry* DiGeometryInstnace::getGeometry() const {
 	return geometry;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-MaterialsList GeoemetryInstnace::getMaterials() const {
+MaterialsList DiGeometryInstnace::getMaterials() const {
 	return materials;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-RTgeometryinstance* GeoemetryInstnace::getRTGeometryInstance() const {
+RTgeometryinstance* DiGeometryInstnace::getRTGeometryInstance() const {
 	return rtGeometryInstance;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void GeoemetryInstnace::setGeometry(Geometry* geometry) {
+void DiGeometryInstnace::setGeometry(DiGeometry* geometry) {
 	this->geometry = geometry;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void GeoemetryInstnace::setMaterials(MaterialsList materials) {
+void DiGeometryInstnace::setMaterials(MaterialsList materials) {
 	this->materials = materials;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void GeoemetryInstnace::setRTGeoemetryInstance(RTgeometryinstance* rtGeometryInstance) {
+void DiGeometryInstnace::setRTGeoemetryInstance(RTgeometryinstance* rtGeometryInstance) {
 	this->rtGeometryInstance = rtGeometryInstance;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void GeoemetryInstnace::create(RTcontext* context) {
+void DiGeometryInstnace::create(RTcontext* context) {
 	RTgeometry* rtGeometry = geometry->getRTGeometry();
 	RTmaterial* rtMaterial = materials[0]->getRTMaterial();
 
@@ -64,4 +73,11 @@ void GeoemetryInstnace::create(RTcontext* context) {
 	RT_CHECK_ERROR(rtGeometryInstanceSetGeometry(*rtGeometryInstance, *rtGeometry));
 	RT_CHECK_ERROR(rtGeometryInstanceSetMaterialCount(*rtGeometryInstance, 1));
 	RT_CHECK_ERROR(rtGeometryInstanceSetMaterial(*rtGeometryInstance, 0, *rtMaterial));
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void DiGeometryInstnace::addMaterial(DiMaterial* material) {
+	materials.push_back(material);
 }

@@ -3,10 +3,10 @@
 
 #include "sceneElment.h"
 
-class Geometry : public SceneElement {
+class DiGeometry : public SceneElement {
 public:
-	Geometry();
-	~Geometry();
+	DiGeometry();
+	~DiGeometry();
 
 	RTgeometry* getRTGeometry() const;
 

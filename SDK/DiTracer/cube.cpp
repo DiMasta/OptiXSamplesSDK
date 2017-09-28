@@ -1,7 +1,7 @@
 #include "cube.h"
 
 Cube::Cube() :
-	Geometry(),
+	DiGeometry(),
 	bottom(),
 	top()
 {
