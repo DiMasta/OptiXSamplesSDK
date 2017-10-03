@@ -1,6 +1,6 @@
-#include "contextManager.h"
+#include "renderer.h"
 
 int main (int argc, char* argv[]) {
-	ContextManager contextManager(argc, argv);
-	contextManager.render();
+	Renderer renderer(argc, argv);
+	renderer.render();
 }

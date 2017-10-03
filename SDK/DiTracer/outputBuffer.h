@@ -4,12 +4,12 @@
 #include "buffer.h"
 #include "constants.h"
 
-class OutputBuffer : public Buffer {
+class OutputBuffer : public DiBuffer {
 public:
 	OutputBuffer();
 	~OutputBuffer();
 
-	void createBuffer(RTcontext* context) override; // From Buffer
+	void createBuffer(RTcontext* context) override; // From DiBuffer
 
 private:
 };

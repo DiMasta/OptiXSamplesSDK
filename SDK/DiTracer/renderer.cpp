@@ -1,9 +1,9 @@
-#include "contextManager.h"
+#include "renderer.h"
 
 using namespace optix;
 using namespace sutil;
 
-ContextManager::ContextManager() :
+Renderer::Renderer() :
 	glutInitArgs()
 {
 	initRendering();
@@ -12,7 +12,7 @@ ContextManager::ContextManager() :
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-ContextManager::ContextManager(int argc, char** argv) {
+Renderer::Renderer(int argc, char** argv) {
 	glutInitArgs.argc = argc;
 	glutInitArgs.argv = argv;
 
@@ -22,7 +22,7 @@ ContextManager::ContextManager(int argc, char** argv) {
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-ContextManager::~ContextManager() {
+Renderer::~Renderer() {
 	if (context) {
 		delete context;
 		context = NULL;
@@ -37,60 +37,69 @@ ContextManager::~ContextManager() {
 		delete scene;
 		scene = NULL;
 	}
+
+	if (glutManager) {
+		delete glutManager;
+		glutManager = NULL;
+	}
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-Scene* ContextManager::getScene() const {
+Scene* Renderer::getScene() const {
 	return scene;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-OutputBuffer* ContextManager::getOutputBuffer() const {
+OutputBuffer* Renderer::getOutputBuffer() const {
 	return outputBuffer;
 }
 
-RTcontext* ContextManager::getContext() const {
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+RTcontext* Renderer::getContext() const {
 	return context;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::setScene(Scene* scene) {
+void Renderer::setScene(Scene* scene) {
 	this->scene = scene;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::setOutputBuffer(OutputBuffer* outputBuffer) {
+void Renderer::setOutputBuffer(OutputBuffer* outputBuffer) {
 	this->outputBuffer = outputBuffer;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::setContext(RTcontext* context) {
+void Renderer::setContext(RTcontext* context) {
 	this->context = context;
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::initRendering() {
+void Renderer::initRendering() {
 	context = new RTcontext();
 	outputBuffer = new OutputBuffer();
 	scene = new Scene();
+	glutManager = new GLUTManager();
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::createContext() {
+void Renderer::createContext() {
 	RT_CHECK_ERROR(rtContextCreate(context));
 	RT_CHECK_ERROR(rtContextSetPrintEnabled(*context, true));
 	RT_CHECK_ERROR(rtContextSetPrintBufferSize(*context, PRINT_BUFFER_SIZE));
@@ -101,19 +110,14 @@ void ContextManager::createContext() {
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::renderBegin() {
+void Renderer::renderBegin() {
 	createContext();
 
 	outputBuffer->createBuffer(context);
 
-	scene->setupCameraForRendering(context);
-	scene->setupCubeForRendering(context);
-	scene->setupConstantMaterialForRendering(context);
-	scene->setupEnvironmentForRendering(context);
+	setupSceneForRendering();
 
-	scene->createOptiXSceneGraph(context);
-
-	initGlut(&glutInitArgs.argc, glutInitArgs.argv);
+	glutManager->init(&glutInitArgs.argc, glutInitArgs.argv);
 
 	RT_CHECK_ERROR(rtContextValidate(*context));
 }
@@ -121,18 +125,31 @@ void ContextManager::renderBegin() {
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::renderEnd() {
+void Renderer::renderEnd() {
 	RT_CHECK_ERROR(rtContextDestroy(*context));
 }
 
 //**************************************************************************************************************************
 //**************************************************************************************************************************
 
-void ContextManager::render() {
+void Renderer::render() {
 	renderBegin();
 
 	RT_CHECK_ERROR(rtContextLaunch2D(*context, 0, BUFFER_WIDTH, BUFFER_HEIGHT));
-	displayBufferGlut(glutInitArgs.argv[0], *getOutputBuffer()->getBuffer());
+
+	glutManager->display(WINDOW_TITLE, outputBuffer->getBuffer());
 
 	renderEnd();
+}
+
+//**************************************************************************************************************************
+//**************************************************************************************************************************
+
+void Renderer::setupSceneForRendering() {
+	scene->setupCameraForRendering(context);
+	scene->setupCubeForRendering(context);
+	scene->setupConstantMaterialForRendering(context);
+	scene->setupEnvironmentForRendering(context);
+
+	scene->createOptiXSceneGraph(context);
 }

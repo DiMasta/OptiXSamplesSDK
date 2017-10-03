@@ -4,10 +4,10 @@
 #include <sutil.h>
 #include <string>
 
-class Buffer {
+class DiBuffer {
 public:
-	Buffer();
-	~Buffer();
+	DiBuffer();
+	~DiBuffer();
 
 	RTbuffer* getBuffer() const;
 	RTvariable* getVariable() const;

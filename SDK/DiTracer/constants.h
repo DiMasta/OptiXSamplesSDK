@@ -12,6 +12,8 @@ static const char* MISS_PTX = "D:\\VLADO\\GPU\\OptiX\\DiTraceSolution\\lib\\ptx\
 static const char* CUBE_PTX = "D:\\VLADO\\GPU\\OptiX\\DiTraceSolution\\lib\\ptx\\diTracer_generated_cube.cu.ptx";
 static const char* CONSTANT_MATERIAL_PTX = "D:\\VLADO\\GPU\\OptiX\\DiTraceSolution\\lib\\ptx\\diTracer_generated_constantMaterial.cu.ptx";
 
+static const char* WINDOW_TITLE = "DI_TRACER";
+
 const optix::float3 DEFAULT_CAEMRA_EYE = { 3.f, 3.f, 3.f };
 const optix::float3 DEFAULT_CAMERA_LOOK_AT = { .0f, .0f, .0f };
 const optix::float3 DEFAULT_CAMERA_UP_VECTOR = { .0f, 1.f, .0f };

@@ -30,7 +30,7 @@
 OPTIX_add_sample_executable( diTracer
   helpers.h
   constants.h
-  contextManager.h
+  renderer.h
   sceneElment.h
   camera.h
   scene.h
@@ -43,8 +43,9 @@ OPTIX_add_sample_executable( diTracer
   outputBuffer.h
   geometryInstance.h
   geometryGroup.h
+  glutManager.h
 
-  contextManager.cpp
+  renderer.cpp
   diTracer.cpp
   sceneElement.cpp
   camera.cpp
@@ -58,6 +59,7 @@ OPTIX_add_sample_executable( diTracer
   outputBuffer.cpp
   geometryInstance.cpp
   geometryGroup.cpp
+  glutManager.cpp
 
   diTracer.cu
   pinholeCamera.cu

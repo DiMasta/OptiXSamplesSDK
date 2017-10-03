@@ -3,20 +3,20 @@
 
 #include <optix.h>
 
-#include "constants.h"
 #include "scene.h"
 #include "outputBuffer.h"
+#include "glutManager.h"
 
 struct GLUTInitArgs {
 	int argc;
 	char** argv;
 };
 
-class ContextManager {
+class Renderer {
 public:
-	ContextManager();
-	ContextManager(int argc, char** argv);
-	~ContextManager();
+	Renderer();
+	Renderer(int argc, char** argv);
+	~Renderer();
 
 	Scene* getScene() const;
 	OutputBuffer* getOutputBuffer() const;
@@ -31,6 +31,7 @@ public:
 	void renderBegin();
 	void renderEnd();
 	void render();
+	void setupSceneForRendering();
 
 private:
 	// Cached main function arguments used to init GLUT
@@ -38,6 +39,7 @@ private:
 
 	Scene* scene;
 	OutputBuffer* outputBuffer;
+	GLUTManager* glutManager;
 
 	RTcontext* context;
 };

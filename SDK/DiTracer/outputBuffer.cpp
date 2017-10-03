@@ -1,7 +1,7 @@
 #include "outputBuffer.h"
 
 OutputBuffer::OutputBuffer() :
-	Buffer()
+	DiBuffer()
 {
 
 }
